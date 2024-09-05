@@ -1,0 +1,3 @@
+// TODO hezci list
+// TODO boop stranka
+// TODO na boop stránce budou ty tlacitka zamikatelny
