@@ -6,6 +6,7 @@ data class Boop(
     val name: String = "",
     val boopCount: Int = 0,
     val createDT: Instant = Instant.now(),
+    val modifyDT: Instant = Instant.now(),
 ): Comparable<Boop> {
     override fun compareTo(other: Boop): Int {
         return this.name.compareTo(other.name)

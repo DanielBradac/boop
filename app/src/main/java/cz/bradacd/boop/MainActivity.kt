@@ -9,6 +9,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import cz.bradacd.boop.ui.screens.BoopScreen
 import cz.bradacd.boop.ui.screens.HomeScreen
 import cz.bradacd.boop.ui.theme.BoopTheme
 
@@ -18,7 +22,11 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             BoopTheme {
-                App()
+                Scaffold { paddingValues ->
+                    Box(modifier = Modifier.padding(paddingValues)) {
+                        App()
+                    }
+                }
             }
         }
     }
@@ -26,11 +34,15 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun App() {
-    Scaffold { paddingValues ->
-        Box(modifier = Modifier.padding(paddingValues)) {
-            HomeScreen()
+    val navController = rememberNavController()
+
+    NavHost(navController = navController, startDestination = "home") {
+        composable("home") { HomeScreen(navController = navController) }
+        composable("details/{boopName}") { backStackEntry ->
+            BoopScreen(boopName = backStackEntry.arguments?.getString("boopName") ?: "")
         }
     }
+
 }
 
 

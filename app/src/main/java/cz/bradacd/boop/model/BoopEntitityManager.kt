@@ -3,6 +3,7 @@ package cz.bradacd.boop.model
 import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
+import java.time.Instant
 
 object BoopEntitityManager {
     private const val BOOPS_STORAGE_NAME = "boops"
@@ -29,7 +30,7 @@ object BoopEntitityManager {
         // Remove old state of boop
         existingBoops.remove(boop)
         // Add new state of boop
-        existingBoops.add(boop)
+        existingBoops.add(boop.copy(modifyDT = Instant.now()))
 
         val editor = getSharedPreferences(context).edit()
         gson.toJson(existingBoops)

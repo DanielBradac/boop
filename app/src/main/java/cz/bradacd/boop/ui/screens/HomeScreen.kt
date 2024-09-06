@@ -2,9 +2,13 @@ package cz.bradacd.boop.ui.screens
 
 import android.content.Context
 import android.widget.Toast
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -19,16 +23,27 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.R
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import cz.bradacd.boop.ui.Headline
 import cz.bradacd.boop.viewmodel.HomePageViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import cz.bradacd.boop.model.Boop
+import cz.bradacd.boop.ui.theme.Pink200
+import cz.bradacd.boop.ui.theme.Purple200
+import cz.bradacd.boop.ui.theme.Purple400
+import cz.bradacd.boop.utils.convert
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(navController: NavController) {
     val context = LocalContext.current
     val viewModel: HomePageViewModel = viewModel()
     val boops by viewModel.boops.collectAsState()
@@ -42,6 +57,7 @@ fun HomeScreen() {
     ) {
         Headline(text = "My Boops")
         BoopList(
+            navController,
             boops ?: emptyList(),
             modifier = Modifier
                 .fillMaxWidth()
@@ -71,7 +87,7 @@ fun HomeScreen() {
 }
 
 @Composable
-fun BoopList(boops: List<Boop>, modifier: Modifier) {
+fun BoopList(navController: NavController, boops: List<Boop>, modifier: Modifier) {
 
     if (boops.isEmpty()) {
         Text("You have no Boops \uD83D\uDE1E Go make some!")
@@ -80,15 +96,56 @@ fun BoopList(boops: List<Boop>, modifier: Modifier) {
     LazyColumn(
         modifier = modifier
     ) {
-        items(boops) { boop ->
-            ListItem(boop)
+        itemsIndexed(boops) { index, boop ->
+            ListItem(boop, index) {
+                navController.navigate("details/${boop.name}")
+            }
         }
     }
 }
 
 @Composable
-fun ListItem(boop: Boop) {
-    Text(text = boop.name)
+fun ListItem(boop: Boop, index: Int, onClick: () -> Unit) {
+    val backgroundColor = if (index % 2 == 0) Pink200 else Purple200
+
+    Box(
+        modifier = Modifier
+            .padding(vertical = 8.dp)
+            .border(
+                width = 2.dp,
+                color = Purple400,
+                shape = RoundedCornerShape(28.dp)
+            )
+            .clickable { onClick() }
+    ) {
+        Column(
+            modifier = Modifier
+                .background(color = backgroundColor, shape = RoundedCornerShape(28.dp))
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            Text(
+                text = boop.name, fontWeight = FontWeight.SemiBold, fontSize = 28.sp,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+
+            Row {
+                Column(
+                    modifier = Modifier.padding(end = 4.dp)
+                ) {
+                    Text(text = "Boops:", fontWeight = FontWeight.Bold)
+                    Text(text = "Created:", fontWeight = FontWeight.Bold)
+                    Text(text = "Modified:", fontWeight = FontWeight.Bold)
+                }
+
+                Column {
+                    Text(text = "${boop.boopCount}")
+                    Text(text = "${boop.createDT.convert()}")
+                    Text(text = "${boop.modifyDT.convert()}")
+                }
+            }
+        }
+    }
 }
 
 @Composable
