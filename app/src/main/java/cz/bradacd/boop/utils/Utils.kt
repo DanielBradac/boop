@@ -1,11 +1,13 @@
 package cz.bradacd.boop.utils
 
-import java.time.Instant
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import java.util.TimeZone
 
-fun Instant.convert(): String? {
-    val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
-    val date = this.atZone(ZoneId.systemDefault()).toLocalDate()  // Convert Instant to LocalDate
-    return date.format(formatter)
+fun Date.convert(): String {
+    val formatter = SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN)
+    formatter.timeZone = TimeZone.getDefault()
+    return formatter.format(this)
 }
+

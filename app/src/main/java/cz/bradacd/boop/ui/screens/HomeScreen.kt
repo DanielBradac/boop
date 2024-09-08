@@ -35,6 +35,7 @@ import cz.bradacd.boop.ui.theme.Purple200
 import cz.bradacd.boop.ui.theme.Purple400
 import cz.bradacd.boop.utils.convert
 
+
 @Composable
 fun HomeScreen(navController: NavController) {
     val context = LocalContext.current
@@ -138,8 +139,8 @@ fun ListItem(boop: Boop, index: Int, onClick: () -> Unit) {
 
                 Column {
                     Text(text = "${boop.boopCount}")
-                    Text(text = "${boop.createDT.convert()}")
-                    Text(text = "${boop.modifyDT.convert()}")
+                    Text(text = boop.createDT.convert())
+                    Text(text = boop.modifyDT.convert())
                 }
             }
 

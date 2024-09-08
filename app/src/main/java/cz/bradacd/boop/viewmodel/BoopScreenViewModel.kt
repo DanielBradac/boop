@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import cz.bradacd.boop.model.Boop
 import cz.bradacd.boop.model.BoopEntitityManager
-import cz.bradacd.boop.ui.EditBoopDialog
 import cz.bradacd.boop.utils.InvalidStateException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

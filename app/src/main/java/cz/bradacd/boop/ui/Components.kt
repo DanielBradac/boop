@@ -117,7 +117,7 @@ fun DeleteBoopDialog(onDismiss: () -> Unit, onDelete: () -> Unit, boopName: Stri
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("New Boop") },
+        title = { Text("Delete Boop") },
         text = {
             Text(text = "Do you really want to delete $boopName?")
         },

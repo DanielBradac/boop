@@ -3,7 +3,7 @@ package cz.bradacd.boop.model
 import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
-import java.time.Instant
+import java.util.Calendar
 
 object BoopEntitityManager {
     private const val BOOPS_STORAGE_NAME = "boops"
@@ -30,12 +30,13 @@ object BoopEntitityManager {
         // Remove old state of boop
         existingBoops.removeIf { it.name == boop.name }
         // Add new state of boop
-        existingBoops.add(boop.copy(modifyDT = Instant.now()))
+        existingBoops.add(boop.copy(modifyDT = Calendar.getInstance().time))
 
         val editor = getSharedPreferences(context).edit()
         gson.toJson(existingBoops)
         editor.putString(BOOPS_STORAGE_NAME, Gson().toJson(SavedBoops(existingBoops)))
         editor.apply()
+        println(boop)
     }
 
     fun deleteBoop(context: Context, boop: Boop) {

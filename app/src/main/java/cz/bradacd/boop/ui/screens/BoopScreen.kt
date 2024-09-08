@@ -1,6 +1,5 @@
 package cz.bradacd.boop.ui.screens
 
-import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -139,7 +138,7 @@ fun ControlPanel(
         ) {
             // Display icon based on the 'locked' state
             Icon(
-                imageVector = if (locked) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
+                imageVector = if (locked) Icons.Filled.KeyboardArrowDown else Icons.Filled.KeyboardArrowUp,
                 contentDescription = if (locked) "Locked" else "Unlocked"
             )
         }
