@@ -1,2 +1,2 @@
 // TODO boop stranka
-// TODO na boop stránce budou ty tlacitka zamikatelny
+// TODO na boop stránce budou ty tlacitka zamykatelny

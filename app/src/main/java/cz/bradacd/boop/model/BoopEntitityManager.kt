@@ -28,7 +28,7 @@ object BoopEntitityManager {
     fun saveBoop(context: Context, boop: Boop) {
         val existingBoops = getSavedBoops(context).toMutableList()
         // Remove old state of boop
-        existingBoops.remove(boop)
+        existingBoops.removeIf { it.name == boop.name }
         // Add new state of boop
         existingBoops.add(boop.copy(modifyDT = Instant.now()))
 
@@ -40,7 +40,7 @@ object BoopEntitityManager {
 
     fun deleteBoop(context: Context, boop: Boop) {
         val existingBoops = getSavedBoops(context).toMutableList()
-        existingBoops.remove(boop)
+        existingBoops.removeIf { it.name == boop.name }
         saveBoops(context, existingBoops)
     }
 
