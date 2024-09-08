@@ -1,7 +1,10 @@
 package cz.bradacd.boop.ui.screens
 
+import android.content.Context
+import android.os.PowerManager
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -16,6 +19,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -34,6 +38,7 @@ import cz.bradacd.boop.viewmodel.BoopScreenViewModel
 
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.font.FontWeight
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.NavController
 import cz.bradacd.boop.ui.DeleteBoopDialog
 import cz.bradacd.boop.ui.EditBoopDialog
@@ -48,6 +53,16 @@ fun BoopScreen(navController: NavController, boopName: String) {
 
     LaunchedEffect(Unit) {
         viewModel.loadBoop(context, boopName)
+    }
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val powerManager = context.getSystemService(Context.POWER_SERVICE) as PowerManager
+    val wakeLock = remember { powerManager.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "Boop::WakeLock") }
+    DisposableEffect(lifecycleOwner) {
+        wakeLock.acquire(20*60*1000L /*20 minutes*/)
+        onDispose {
+            wakeLock.release()
+        }
     }
 
     var showDeleteDialog by remember { mutableStateOf(false) }
@@ -71,6 +86,8 @@ fun BoopScreen(navController: NavController, boopName: String) {
             boop?.let {
                 BoopData(boop = it)
             }
+            
+            Spacer(modifier = Modifier.weight(1f))
 
             ControlPanel(
                 onMinus = { viewModel.decrementBoop(context) },

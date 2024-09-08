@@ -62,10 +62,7 @@ fun HomeScreen(navController: NavController) {
                 .weight(1f)
         )
         Spacer(modifier = Modifier.height(16.dp))
-        NewBoopButton(
-            { showDialog = true },
-            context
-        )
+        NewBoopButton { showDialog = true }
     }
 
     // Modal dialog
@@ -76,6 +73,7 @@ fun HomeScreen(navController: NavController) {
                 try {
                     viewModel.saveNewBoop(newBoop, context)
                     showDialog = false
+                    navController.navigate("details/${newBoop.name}")
                 } catch (e: Exception) {
                     Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
                 }
@@ -156,7 +154,7 @@ fun ListItem(boop: Boop, index: Int, onClick: () -> Unit) {
 }
 
 @Composable
-fun NewBoopButton(onClick: () -> Unit, context: Context) {
+fun NewBoopButton(onClick: () -> Unit) {
     Button(
         modifier = Modifier.fillMaxWidth(),
         onClick = { onClick() }
