@@ -1,3 +1,4 @@
+# App description
 Simple Android Jetpack Compose counter app (used mainly for counting knitting rows :) ).
 
 # Features:
